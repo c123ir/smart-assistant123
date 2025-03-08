@@ -1,0 +1,1365 @@
+/**
+ * @file UserManagement.scss
+ * @description استایل‌های کامپوننت مدیریت کاربران
+ */
+
+.user-management {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.5rem;
+  overflow-y: auto;
+  background-color: var(--bg-color);
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0;
+      color: var(--heading-color);
+    }
+
+    .actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .search-box {
+      position: relative;
+      
+      input {
+        padding: 0.5rem 0.75rem;
+        padding-right: 2.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        background-color: var(--input-bg);
+        color: var(--text-color);
+        width: 300px;
+        transition: all 0.2s;
+        font-size: 0.95rem;
+        
+        &:focus {
+          outline: none;
+          border-color: var(--primary-color);
+          box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
+        }
+      }
+      
+      .icon {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1.25rem;
+        height: 1.25rem;
+        color: var(--text-muted);
+      }
+    }
+  }
+
+  .error-message {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--error-color);
+    background-color: var(--error-bg);
+    border: 1px solid var(--error-border);
+    border-radius: 6px;
+    padding: 0.85rem 1rem;
+    margin-bottom: 1.25rem;
+    font-weight: 500;
+    position: relative;
+    
+    svg {
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      color: var(--error-color);
+    }
+    
+    .close-button {
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: var(--error-color);
+      font-size: 1.25rem;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+    }
+  }
+
+  .users-table-container {
+    width: 100%;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    background-color: var(--bg-color);
+  }
+
+  .users-table {
+    width: 100%;
+    border-collapse: collapse;
+    
+    th, td {
+      padding: 0.9rem 1rem;
+      text-align: right;
+      border-bottom: 1px solid var(--border-color);
+      vertical-align: middle;
+    }
+    
+    th {
+      background-color: var(--panel-header-bg);
+      font-weight: 600;
+      color: var(--text-color);
+      white-space: nowrap;
+      user-select: none;
+      
+      &.sortable {
+        cursor: pointer;
+        transition: background-color 0.2s;
+        position: relative;
+        padding-left: 1.5rem;
+        
+        &:hover {
+          background-color: var(--hover-bg);
+        }
+        
+        .sort-icon {
+          position: absolute;
+          left: 0.75rem;
+          color: var(--primary-color);
+          font-size: 0.8rem;
+        }
+      }
+    }
+    
+    tr:last-child td {
+      border-bottom: none;
+    }
+    
+    tr:hover td {
+      background-color: var(--hover-bg);
+    }
+    
+    .no-data {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 3rem 0;
+      font-weight: 500;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      
+      .icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        opacity: 0.6;
+      }
+    }
+    
+    .username {
+      font-family: monospace;
+      font-size: 0.95rem;
+    }
+    
+    .email {
+      a {
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: color 0.2s;
+        
+        &:hover {
+          color: var(--primary-color-dark);
+          text-decoration: underline;
+        }
+      }
+    }
+    
+    .date {
+      white-space: nowrap;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      white-space: nowrap;
+      
+      &.role-admin {
+        background-color: var(--error-bg);
+        color: var(--error-color);
+      }
+      
+      &.role-manager {
+        background-color: rgba(var(--primary-color-rgb), 0.1);
+        color: var(--primary-color);
+      }
+      
+      &.role-developer {
+        background-color: var(--success-bg);
+        color: var(--success-color);
+      }
+      
+      &.role-viewer {
+        background-color: rgba(107, 114, 128, 0.1);
+        color: var(--text-color-secondary);
+      }
+    }
+    
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: flex-start;
+      white-space: nowrap;
+    }
+  }
+  
+  // استایل جدید برای نمایش کارت‌های کاربران
+  .user-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    width: 100%;
+    margin-top: 1rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+
+    .loading-users {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      width: 100%;
+      
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .user-item {
+      display: flex;
+      flex-direction: column;
+      border-radius: 8px;
+      padding: 0.75rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      font-size: 0.875rem;
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      
+      // رنگ‌بندی بر اساس نقش کاربر
+      &.role-admin {
+        background-color: var(--card-1-bg, #fff5f5);
+        border-left: 3px solid var(--card-1-accent, var(--error-color));
+        
+        .user-name {
+          color: var(--card-1-accent, var(--error-color));
+        }
+        
+        &::before {
+          background-color: var(--card-1-accent, var(--error-color));
+          opacity: 0.03;
+        }
+      }
+      
+      &.role-manager {
+        background-color: var(--card-2-bg, #ebf8ff);
+        border-left: 3px solid var(--card-2-accent, var(--primary-color));
+        
+        .user-name {
+          color: var(--card-2-accent, var(--primary-color));
+        }
+        
+        &::before {
+          background-color: var(--card-2-accent, var(--primary-color));
+          opacity: 0.03;
+        }
+      }
+      
+      &.role-developer {
+        background-color: var(--card-3-bg, #e6fffa);
+        border-left: 3px solid var(--card-3-accent, var(--success-color));
+        
+        .user-name {
+          color: var(--card-3-accent, var(--success-color));
+        }
+        
+        &::before {
+          background-color: var(--card-3-accent, var(--success-color));
+          opacity: 0.03;
+        }
+      }
+      
+      &.role-viewer {
+        background-color: var(--card-4-bg, #fffaf0);
+        border-left: 3px solid var(--card-4-accent, var(--warning-color));
+        
+        .user-name {
+          color: var(--card-4-accent, var(--warning-color));
+        }
+        
+        &::before {
+          background-color: var(--card-4-accent, var(--warning-color));
+          opacity: 0.03;
+        }
+      }
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0;
+      }
+      
+      .user-info {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 1;
+        
+        .user-avatar {
+          width: 35px;
+          height: 35px;
+          border-radius: 50%;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1rem;
+          font-weight: 600;
+          color: white;
+          background-color: var(--primary-color);
+          flex-shrink: 0;
+          
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+          
+          .no-avatar {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+        
+        .user-details {
+          flex: 1;
+          
+          .user-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.125rem;
+          }
+          
+          .user-username {
+            font-size: 0.8rem;
+            color: var(--text-color-secondary);
+            margin-bottom: 0.125rem;
+          }
+          
+          .user-phone {
+            font-size: 0.8rem;
+            color: var(--text-color-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            
+            svg {
+              width: 12px;
+              height: 12px;
+            }
+          }
+        }
+      }
+      
+      .user-email {
+        font-size: 0.85rem;
+        color: var(--text-color);
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        
+        svg {
+          width: 12px;
+          height: 12px;
+          color: var(--text-muted);
+        }
+      }
+      
+      .user-role {
+        margin-bottom: 0.75rem;
+        position: relative;
+        z-index: 1;
+        
+        .role-badge {
+          font-size: 0.75rem;
+          padding: 0.1rem 0.5rem;
+        }
+      }
+      
+      .user-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: auto;
+        position: relative;
+        z-index: 1;
+        
+        button {
+          padding: 0.25rem 0.5rem;
+          font-size: 0.75rem;
+          
+          svg {
+            width: 12px;
+            height: 12px;
+          }
+          
+          &.secondary svg {
+            color: var(--primary-color);
+          }
+          
+          &.danger svg {
+            color: var(--error-color);
+          }
+        }
+      }
+    }
+    
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem 0;
+      color: var(--text-muted);
+      font-weight: 500;
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      border: 1px dashed var(--border-color);
+    }
+  }
+  
+  // اسکلتون لودر
+  .skeleton-row {
+    td {
+      padding: 0.75rem 1rem;
+      
+      .skeleton-item {
+        height: 1.2rem;
+        background: linear-gradient(90deg, var(--hover-bg) 25%, var(--border-color) 50%, var(--hover-bg) 75%);
+        background-size: 200% 100%;
+        border-radius: 4px;
+        animation: shimmer 1.5s infinite;
+        
+        &.small {
+          width: 60px;
+        }
+      }
+    }
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 0;
+    color: var(--text-muted);
+  }
+}
+
+// استایل اسکلتون کارت‌ها
+.user-item.skeleton {
+  pointer-events: none;
+  
+  .skeleton-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, var(--hover-bg) 25%, var(--border-color) 50%, var(--hover-bg) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+  
+  .skeleton-text {
+    height: 1rem;
+    margin: 0.5rem 0;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--hover-bg) 25%, var(--border-color) 50%, var(--hover-bg) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    
+    &:nth-child(1) {
+      width: 70%;
+    }
+    
+    &:nth-child(2) {
+      width: 40%;
+    }
+    
+    &:nth-child(3) {
+      width: 55%;
+    }
+  }
+  
+  .skeleton-button {
+    width: 50px;
+    height: 25px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, var(--hover-bg) 25%, var(--border-color) 50%, var(--hover-bg) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+}
+
+/* استایل دکمه‌های آیکونی */
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text-color);
+  transition: all 0.2s;
+  
+  &:hover {
+    background-color: var(--hover-btn-bg);
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.3);
+  }
+  
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* استایل دکمه‌های معمولی */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  line-height: 1.5;
+  
+  .icon {
+    width: 18px;
+    height: 18px;
+  }
+  
+  &.primary {
+    background-color: var(--primary-color);
+    color: white;
+    
+    &:hover {
+      background-color: var(--primary-color-dark);
+    }
+    
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.4);
+    }
+  }
+  
+  &.secondary {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    
+    &:hover {
+      background-color: var(--hover-bg);
+    }
+    
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+    }
+  }
+  
+  &.danger {
+    background-color: var(--error-color);
+    color: white;
+    
+    &:hover {
+      background-color: var(--error-color-dark);
+    }
+    
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(var(--error-color-rgb), 0.4);
+    }
+  }
+}
+
+/* استایل مودال */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  background-color: var(--modal-bg);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideIn 0.3s ease-out;
+  border: 1px solid var(--modal-border-color);
+  color: var(--text-color);
+  
+  // استایل اسکرول‌بار
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+    border-radius: 8px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 8px;
+    
+    &:hover {
+      background: var(--scrollbar-thumb-hover);
+    }
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--modal-border-color);
+    background: var(--modal-header-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 12px 12px 0 0;
+    
+    h2 {
+      margin: 0;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--modal-heading-color);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      
+      svg {
+        width: 24px;
+        height: 24px;
+        color: var(--primary-color);
+      }
+    }
+    
+    .close-button {
+      background: transparent;
+      border: none;
+      color: var(--modal-close-color);
+      font-size: 1.7rem;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: var(--modal-close-hover-bg);
+        color: var(--modal-close-hover-color);
+        transform: rotate(90deg);
+      }
+    }
+  }
+  
+  form, .modal-content {
+    padding: 1.5rem;
+    background: var(--modal-content-bg);
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--modal-label-color);
+      font-size: 0.95rem;
+      
+      .required {
+        color: var(--error-color);
+        margin-right: 0.25rem;
+      }
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--modal-input-border);
+      border-radius: 8px;
+      background-color: var(--modal-input-bg);
+      color: var(--modal-input-color);
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      
+      &::placeholder {
+        color: var(--modal-placeholder-color);
+      }
+      
+      &:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: var(--shadow-focus);
+        background-color: var(--modal-input-focus-bg);
+      }
+      
+      &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        background-color: var(--disabled-bg);
+      }
+    }
+    
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: left 1rem center;
+      background-size: 1em;
+      padding-left: 2.5rem;
+    }
+  }
+  
+  .form-error {
+    margin: 1.5rem 1.5rem 0;
+    padding: 1rem 1.25rem;
+    background-color: var(--modal-error-bg);
+    border-radius: 8px;
+    color: var(--modal-error-color);
+    font-weight: 500;
+    border-right: 4px solid var(--error-color);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    
+    svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--modal-footer-bg, var(--modal-header-bg));
+    border-top: 1px solid var(--modal-border-color);
+    border-radius: 0 0 12px 12px;
+    
+    button {
+      min-width: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+      
+      &.primary {
+        background: linear-gradient(to bottom right, var(--primary-color), var(--primary-color-dark));
+        
+        &:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(var(--primary-color-rgb), 0.3);
+        }
+        
+        &:active {
+          transform: translateY(0);
+        }
+      }
+      
+      &.danger {
+        background: linear-gradient(to bottom right, var(--error-color), var(--error-color-dark));
+        
+        &:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(var(--error-color-rgb), 0.3);
+        }
+        
+        &:active {
+          transform: translateY(0);
+        }
+      }
+    }
+  }
+  
+  &.delete-modal {
+    max-width: 420px;
+    
+    .warning-icon {
+      svg {
+        width: 4rem;
+        height: 4rem;
+        color: var(--warning-color);
+        animation: pulse 2s infinite;
+      }
+    }
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+    
+    .warning {
+      color: var(--modal-warning-color);
+      font-weight: 500;
+      margin-top: 1rem;
+      text-align: center;
+      padding: 0.75rem;
+      background: var(--modal-warning-bg);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      
+      svg {
+        width: 20px;
+        height: 20px;
+        color: var(--warning-color);
+      }
+    }
+  }
+
+  .avatar-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    input {
+      width: 100%;
+    }
+
+    .avatar-preview {
+      margin-top: 10px;
+      text-align: center;
+      
+      img {
+        max-width: 100px;
+        max-height: 100px;
+        border-radius: 50%;
+        border: 2px solid var(--border-color);
+        box-shadow: var(--shadow-sm);
+        
+        &:hover {
+          transform: scale(1.05);
+          transition: transform 0.2s ease;
+        }
+      }
+    }
+  }
+
+  input[type="tel"],
+  input[type="url"],
+  input[type="password"] {
+    direction: ltr;
+    text-align: left;
+    font-family: monospace;
+    letter-spacing: 1px;
+    
+    &::placeholder {
+      direction: rtl;
+      text-align: right;
+      font-family: inherit;
+      letter-spacing: normal;
+    }
+  }
+
+  .has-error {
+    input[type="tel"],
+    input[type="url"],
+    input[type="password"] {
+      border-color: var(--error-color);
+      
+      &:focus {
+        box-shadow: 0 0 0 0.2rem rgba(var(--error-color-rgb), 0.25);
+      }
+    }
+  }
+}
+
+.user-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-lg);
+  
+  .user-item {
+    background-color: var(--bg-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    border: 1px solid var(--border-color);
+    
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: transparent;
+    }
+    
+    // رنگ‌بندی بر اساس نقش کاربر
+    &.role-admin {
+      background-color: var(--card-4-bg);
+      border-right: 4px solid var(--card-4-accent);
+      
+      &:before {
+        background-color: var(--card-4-accent);
+      }
+    }
+    
+    &.role-manager {
+      background-color: var(--card-1-bg);
+      border-right: 4px solid var(--card-1-accent);
+      
+      &:before {
+        background-color: var(--card-1-accent);
+      }
+    }
+    
+    &.role-developer {
+      background-color: var(--card-2-bg);
+      border-right: 4px solid var(--card-2-accent);
+      
+      &:before {
+        background-color: var(--card-2-accent);
+      }
+    }
+    
+    &.role-viewer {
+      background-color: var(--card-3-bg);
+      border-right: 4px solid var(--card-3-accent);
+      
+      &:before {
+        background-color: var(--card-3-accent);
+      }
+    }
+    
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 3px;
+      opacity: 0.8;
+      transition: all var(--transition-normal);
+    }
+    
+    &:hover:before {
+      height: 5px;
+    }
+    
+    .user-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-right: 10px;
+      border: 2px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+      transition: all var(--transition-normal);
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      &.no-avatar {
+        background-color: var(--bg-color-secondary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: var(--text-color-secondary);
+      }
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+
+      .user-details {
+        margin-right: 10px;
+        
+        .user-name {
+          font-weight: 600;
+          font-size: 1.1rem;
+          margin-bottom: 4px;
+          color: var(--heading-color);
+        }
+        
+        .user-username {
+          font-family: monospace;
+          color: var(--text-color-secondary);
+          margin-bottom: 4px;
+        }
+
+        .user-phone {
+          font-size: 0.9em;
+          color: var(--text-color-secondary);
+          direction: ltr;
+          display: flex;
+          align-items: center;
+          
+          &:before {
+            content: "📱";
+            margin-left: 6px;
+            font-size: 0.9em;
+          }
+        }
+      }
+    }
+    
+    .user-email {
+      display: flex;
+      align-items: center;
+      margin-top: var(--spacing-xs);
+      font-size: 0.95rem;
+      color: var(--primary-color);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      
+      &:before {
+        content: "📧";
+        margin-left: 6px;
+        font-size: 0.9em;
+      }
+    }
+    
+    .user-role {
+      margin-top: var(--spacing-xs);
+      
+      .role-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: var(--spacing-xs) var(--spacing-md);
+        border-radius: var(--radius-full);
+        font-size: var(--font-size-sm);
+        font-weight: 500;
+        
+        &:before {
+          content: "";
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          margin-left: 6px;
+        }
+        
+        &.role-admin {
+          background-color: var(--error-color-light);
+          color: var(--error-color-dark);
+          
+          &:before {
+            background-color: var(--error-color);
+          }
+        }
+        
+        &.role-manager {
+          background-color: var(--primary-color-light);
+          color: var(--primary-color-dark);
+          
+          &:before {
+            background-color: var(--primary-color);
+          }
+        }
+        
+        &.role-developer {
+          background-color: var(--success-color-light);
+          color: var(--success-color-dark);
+          
+          &:before {
+            background-color: var(--success-color);
+          }
+        }
+        
+        &.role-viewer {
+          background-color: var(--warning-color-light);
+          color: var(--warning-color-dark);
+          
+          &:before {
+            background-color: var(--warning-color);
+          }
+        }
+      }
+    }
+    
+    .user-actions {
+      display: flex;
+      gap: var(--spacing-sm);
+      margin-top: var(--spacing-md);
+      padding-top: var(--spacing-sm);
+      border-top: 1px dashed var(--border-color);
+      
+      button {
+        min-width: 80px;
+        flex: 1;
+        
+        &.secondary {
+          background-color: var(--primary-color);
+          color: white;
+          
+          &:hover {
+            background-color: var(--primary-color-dark);
+            transform: translateY(-1px);
+          }
+        }
+        
+        &.danger {
+          background-color: var(--error-color);
+          color: white;
+          
+          &:hover {
+            background-color: var(--error-color-dark);
+            transform: translateY(-1px);
+          }
+        }
+        
+        &.small {
+          padding: var(--spacing-xs) var(--spacing-md);
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+  
+  .no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--spacing-xl);
+    background-color: var(--card-5-bg);
+    border-radius: var(--radius-lg);
+    color: var(--text-color-secondary);
+    box-shadow: var(--shadow-sm);
+    font-weight: 500;
+    border-right: 4px solid var(--card-5-accent);
+  }
+  
+  // رسپانسیو برای دستگاه‌های موبایل
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    
+    .user-item {
+      padding: var(--spacing-md);
+      
+      .user-info {
+        flex-direction: column;
+        align-items: flex-start;
+        
+        .user-avatar {
+          margin-bottom: var(--spacing-sm);
+          margin-right: 0;
+        }
+        
+        .user-details {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+  
+  @media (max-width: 576px) {
+    grid-template-columns: 1fr;
+  }
+
+  // استایل اسکلتون برای حالت بارگذاری
+  .user-item.skeleton {
+    background-color: var(--bg-color);
+    
+    .skeleton-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(90deg, var(--hover-bg) 25%, var(--border-color) 50%, var(--hover-bg) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+    
+    .skeleton-text {
+      height: 16px;
+      margin-bottom: 8px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(90deg, var(--hover-bg) 25%, var(--border-color) 50%, var(--hover-bg) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      
+      &:last-child {
+        width: 70%;
+      }
+    }
+    
+    .user-name.skeleton-text {
+      height: 20px;
+      width: 150px;
+    }
+    
+    .user-username.skeleton-text {
+      width: 120px;
+    }
+    
+    .user-phone.skeleton-text {
+      width: 100px;
+    }
+    
+    .user-email.skeleton-text {
+      width: 180px;
+    }
+    
+    .user-role.skeleton-text {
+      width: 80px;
+      height: 24px;
+      border-radius: var(--radius-full);
+    }
+    
+    .skeleton-button {
+      background: linear-gradient(90deg, var(--hover-bg) 25%, var(--border-color) 50%, var(--hover-bg) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      color: transparent;
+    }
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+} 
